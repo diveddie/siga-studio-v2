@@ -10,6 +10,17 @@ export function AnimatedLogo({ className }: { className?: string }) {
       viewBox="0 0 210.81 210.81"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
+      variants={{
+        hidden: { scale: 1, opacity: 1 },
+        visible: {
+          scale: [1, 1, 50],
+          opacity: [1, 0.8, 0],
+          transition: {
+            times: [0, 0.8, 1],
+            duration: 2.5,
+          },
+        },
+      }}
     >
       {/* Chat Bubble Background */}
       <motion.path

@@ -100,17 +100,37 @@ const App: React.FC = () => {
   }
 
   return (
-    <main className="h-[calc(100vh)] bg-red-200 w-full flex flex-col">
+    <main className="h-[calc(100vh)] w-full flex flex-col">
       <HelpDialog open={showHelpDialog} onOpenChange={setShowHelpDialog} />
-      <div className="flex flex-1 overflow-hidden bg-blue-200">
+      <motion.div 
+        className="flex flex-1 overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4 }}
+      >
         {/* Main Canvas Area */}
-        <div className="flex-1 flex">
+        <motion.div 
+          className="flex-1 flex"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           {/* Canvas */}
           <div className="flex-1 flex items-center justify-center p-6 overflow-auto bg-background">
-            <div className="w-full h-full rounded-lg border-2 border-dashed border-border flex items-center justify-center relative">
+            <motion.div 
+              className="w-full h-full rounded-lg border-2 border-dashed border-border flex items-center justify-center relative"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.4 }}
+            >
               <div className="relative aspect-square w-full max-w-2xl mx-auto rounded-md">
                 {/* Image Display Area */}
-                <div className="relative aspect-square w-full bg-muted rounded-lg">
+                <motion.div 
+                  className="relative aspect-square w-full bg-muted rounded-lg"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.6 }}
+                >
                   <LoadingOverlay />
                   <ImageDisplay className="rounded-lg" />
                   {/* Mask Overlay */}
@@ -119,27 +139,41 @@ const App: React.FC = () => {
                   </div>
                   {/* Empty State Message */}
                   {!useImageStore.getState().getLatestImage() && (
-                    <div className="absolute inset-0 flex items-center justify-center">
+                    <motion.div 
+                      className="absolute inset-0 flex items-center justify-center"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3, delay: 0.8 }}
+                    >
                       <div className="text-center text-muted-foreground p-4">
                         <p className="text-lg font-medium mb-2">
                           No image generated yet
                         </p>
                         <p className="text-sm">
-                          Try saying &quot;Generate an image of [your
-                          description]&quot;
+                          Try saying &quot;Generate an image of [your description]&quot;
                         </p>
                       </div>
-                    </div>
+                    </motion.div>
                   )}
-                </div>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Right Panel */}
-          <div className="w-1/3 border-l border-border bg-card flex flex-col">
+          <motion.div 
+            className="w-1/3 border-l border-border bg-card flex flex-col"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             <Header />
-            <div className="p-4 space-y-4">
+            <motion.div 
+              className="p-4 space-y-4"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.5 }}
+            >
               <VoiceSelector value={voice} onValueChange={setVoice} />
               <div className="flex flex-col gap-2">
                 <BroadcastButton
@@ -147,23 +181,28 @@ const App: React.FC = () => {
                   onClick={handleStartStopClick}
                 />
                 {isSessionActive && (
-                  <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                  <motion.div 
+                    className="flex items-center justify-center gap-2 text-sm text-muted-foreground"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     <span>Mic: {isMicMuted ? "Muted" : "Active"}</span>
                     <kbd className="inline-flex items-center gap-1 rounded border bg-muted px-2 font-mono text-xs">
                       <span className="text-xs">⌘</span>M
                     </kbd>
-                  </div>
+                  </motion.div>
                 )}
               </div>
-            </div>
+            </motion.div>
 
             <div className="flex flex-1 p-4 justify-between">
               {status && (
                 <motion.div
                   className="flex flex-col flex-1 justify-between mb-2 gap-4"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
                 >
                   <MessageControls conversation={conversation} />
                   {isSessionActive && (
@@ -176,10 +215,18 @@ const App: React.FC = () => {
               )}
             </div>
 
-            {status && <StatusDisplay status={status} />}
-          </div>
-        </div>
-      </div>
+            {status && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                <StatusDisplay status={status} />
+              </motion.div>
+            )}
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </main>
   );
 };

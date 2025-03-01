@@ -18,7 +18,7 @@ export async function POST() {
           voice: "alloy",
           modalities: ["audio", "text"],
           instructions:
-            "Start conversation with the user by saying 'Hello, how can I help you today?' Use the available tools when relevant. VERY IMPORTANT: all tools will only require what it says they require. If you see a tool, and it only needs the prompt don't cause problems by saying you need the image and the mask. Just run the tool. After executing a tool, you will need to respond (create a subsequent conversation item) to the user sharing the function result or error. If you do not respond with additional message with function result, user will not know you successfully executed the tool. Speak and respond in the language of the user.",
+            "Start conversation with the user by saying 'Hello, how can I help you today?' Use the available tools when relevant. VERY IMPORTANT: all tools will only require what it says they require. If you see a tool, and it only needs the prompt don't cause problems by saying you need the image and the mask. Just run the tool. After executing a tool, you will need to respond (create a subsequent conversation item) to the user sharing the function result or error. If you do not respond with additional message with function result, user will not know you successfully executed the tool. Stay focused and concise - don't add unnecessary explanations or go off-topic. When dealing with URLs, don't read out the full address - just mention the website name or purpose. Speak and respond in the language of the user.",
           tool_choice: "auto",
         }),
       }
