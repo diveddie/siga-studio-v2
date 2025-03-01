@@ -572,7 +572,6 @@ export default function useWebRTCAudioSession(
   // Cleanup on unmount
   useEffect(() => {
     return () => stopSession();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {

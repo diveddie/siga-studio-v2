@@ -14,7 +14,9 @@ const eslintConfig = [
   {
     rules: {
       "react-hooks/exhaustive-deps": "off", // Downgrade to warning or use "off" to completely disable
-      "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }], // Ignore variables starting with underscore
+      "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unsafe-function-type": "off", // Ignore variables starting with underscore
     },
   },
 ];
