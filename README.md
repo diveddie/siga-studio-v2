@@ -1,6 +1,12 @@
 # Siga Studio
 A voice-driven design studio that makes design accessible for everyone. Built with OpenAI's Realtime API and WebRTC, Siga Studio enables hands-free design through natural conversation. Create, edit, and collaborate on designs using just your voice.
 
+# Siga Team
+- Andrew Suther
+- Claire Dubiel
+- Eddie Hudson
+- Shep Bryan
+
 ## Features
 - **Voice-First Design**: Create and modify designs through natural conversation
 - **Accessibility Focus**: Built from the ground up for designers of all abilities
