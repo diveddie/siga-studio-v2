@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { imageUrlToBase64 } from "@/lib/utils/image";
 import { createClient } from "@supabase/supabase-js";
 
+// Add config for increased timeout
+export const runtime = 'edge';
+export const maxDuration = 300; // 5 minutes
+
 const SEGMIND_API_URL = "https://api.segmind.com/v1/automatic-mask-generator";
 
 // Initialize Supabase

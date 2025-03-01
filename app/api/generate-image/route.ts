@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import Replicate from "replicate";
 import { createClient } from "@supabase/supabase-js";
 
+// Add config for increased timeout
+export const runtime = 'edge';
+export const maxDuration = 300; // 5 minutes
+
 // Initialize Replicate
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
