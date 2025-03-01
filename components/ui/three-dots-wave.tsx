@@ -24,6 +24,7 @@ const loadingContainerVariants = {
   end: {
     transition: {
       staggerChildren: 0.2,
+      repeat: Infinity,
     },
   },
 };
@@ -39,16 +40,17 @@ const loadingCircleVariants = {
 
 const loadingCircleTransition = {
   duration: 0.5,
-  yoyo: Infinity,
+  repeat: Infinity,
+  repeatType: "reverse" as const,
   ease: "easeInOut",
 };
 
 interface ThreeDotsWaveProps {
-  colorVariable?: string; // CSS variable for background color
+  colorVariable?: string;
 }
 
 export default function ThreeDotsWave({
-  colorVariable = "--card",
+  colorVariable = "--foreground",
 }: ThreeDotsWaveProps) {
   return (
     <motion.div
@@ -57,30 +59,17 @@ export default function ThreeDotsWave({
       initial="start"
       animate="end"
     >
-      <motion.span
-        style={{
-          ...loadingCircle,
-          backgroundColor: `hsl(var(${colorVariable}))`, // Use HSL function for Tailwind CSS variables
-        }}
-        variants={loadingCircleVariants}
-        transition={loadingCircleTransition}
-      />
-      <motion.span
-        style={{
-          ...loadingCircle,
-          backgroundColor: `hsl(var(${colorVariable}))`,
-        }}
-        variants={loadingCircleVariants}
-        transition={loadingCircleTransition}
-      />
-      <motion.span
-        style={{
-          ...loadingCircle,
-          backgroundColor: `hsl(var(${colorVariable}))`,
-        }}
-        variants={loadingCircleVariants}
-        transition={loadingCircleTransition}
-      />
+      {[1, 2, 3].map((index) => (
+        <motion.span
+          key={index}
+          style={{
+            ...loadingCircle,
+            backgroundColor: `hsl(var(${colorVariable}) / 0.7)`, // Added opacity for better visual
+          }}
+          variants={loadingCircleVariants}
+          transition={loadingCircleTransition}
+        />
+      ))}
     </motion.div>
   );
 }

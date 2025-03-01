@@ -91,7 +91,33 @@ const toolDefinitions = {
                 description: 'Description of what to change in the image'
             }
         }
-    }
+    },
+    restartSession: {
+        description: 'Restarts the session by clearing all images and masks from memory',
+        parameters: {}
+    },
+    clearMask: {
+        description: 'Removes only the current mask while keeping the original image',
+        parameters: {}
+    },
+    showHelp: {
+        description: 'Shows a dialog with information about available commands and tools',
+        parameters: {}
+    },
+    closeHelp: {
+        description: 'Closes the help dialog',
+        parameters: {}
+    },
+    changeVoice: {
+        description: 'Changes the AI assistant voice',
+        parameters: {
+            voice: {
+                type: 'string',
+                description: 'Voice to use (options: ash, ballad, coral, sage, verse)',
+                enum: ['ash', 'ballad', 'coral', 'sage', 'verse']
+            }
+        }
+    },
 } as const;
 
 const tools: Tool[] = Object.entries(toolDefinitions).map(([name, config]) => ({

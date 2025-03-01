@@ -48,6 +48,26 @@ export function ToolsEducation() {
     {
       name: t("tools.availableTools.inpaintImage.name"),
       description: t("tools.availableTools.inpaintImage.description"),
+    },
+    {
+      name: t("tools.availableTools.restartSession.name"),
+      description: t("tools.availableTools.restartSession.description"),
+    },
+    {
+      name: t("tools.availableTools.clearMask.name"),
+      description: t("tools.availableTools.clearMask.description"),
+    },
+    {
+      name: t("tools.availableTools.showHelp.name"),
+      description: t("tools.availableTools.showHelp.description"),
+    },
+    {
+      name: t("tools.availableTools.closeHelp.name"),
+      description: t("tools.availableTools.closeHelp.description"),
+    },
+    {
+      name: t("tools.availableTools.changeVoice.name"),
+      description: t("tools.availableTools.changeVoice.description"),
     }
   ] as const;
 

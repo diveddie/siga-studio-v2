@@ -7,6 +7,7 @@ interface ImageStore {
   getLatestImage: () => string | undefined
   getLatestMask: () => string | undefined
   getLatestIndividualMasks: () => string[]
+  clearMasks: () => void  // Add this new method
 }
 
 export const useImageStore = create<ImageStore>((set, get) => ({
@@ -39,5 +40,12 @@ export const useImageStore = create<ImageStore>((set, get) => ({
     return Object.entries(state.images)
       .filter(([id]) => id.startsWith('mask-individual-'))
       .map(([_, url]) => url);
-  }
+  },
+  clearMasks: () => 
+    set((state) => {
+      const newImages = Object.entries(state.images)
+        .filter(([id]) => !id.startsWith('mask-'))
+        .reduce((acc, [id, url]) => ({ ...acc, [id]: url }), {});
+      return { images: newImages };
+    }),
 }))

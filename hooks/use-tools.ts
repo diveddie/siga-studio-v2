@@ -6,9 +6,14 @@ import { animate as framerAnimate } from "framer-motion";
 import { useTranslations } from "@/components/translations-context";
 import FirecrawlApp, { ScrapeResponse } from "@mendable/firecrawl-js";
 import { useImageStore } from "@/lib/stores/image-store";
+import { useLoadingStore } from '@/lib/stores/loading-store';
+import { useState } from 'react';
 
-export const useToolsFunctions = () => {
+export const useToolsFunctions = (setVoice: (voice: string) => void) => {
   const { t } = useTranslations();
+  const { setGeneratingImage, setGeneratingMask, setInpainting } = useLoadingStore();
+  
+  const [showHelpDialog, setShowHelpDialog] = useState(false);
 
   const timeFunction = () => {
     const now = new Date();
@@ -236,6 +241,7 @@ export const useToolsFunctions = () => {
     prompt: string;
     guidance?: number;
   }) => {
+    setGeneratingImage(true);
     try {
       const response = await fetch("/api/generate-image", {
         method: "POST",
@@ -267,10 +273,13 @@ export const useToolsFunctions = () => {
         success: false,
         message: `Error generating image: ${error}`,
       };
+    } finally {
+      setGeneratingImage(false);
     }
   };
 
   const createImageMask = async ({ prompt }: { prompt: string }) => {
+    setGeneratingMask(true);
     try {
       // Get the latest image from Zustand store
       const imageUrl = useImageStore.getState().getLatestImage();
@@ -317,10 +326,13 @@ export const useToolsFunctions = () => {
         success: false,
         message: `Error generating mask: ${error}`,
       };
+    } finally {
+      setGeneratingMask(false);
     }
   };
 
   const inpaintImage = async ({ prompt }: { prompt: string }) => {
+    setInpainting(true);
     try {
       const imageUrl = useImageStore.getState().getLatestImage();
       const maskUrl = useImageStore.getState().getLatestMask();
@@ -362,6 +374,104 @@ export const useToolsFunctions = () => {
         success: false,
         message: `Error inpainting image: ${error}`,
       };
+    } finally {
+      setInpainting(false);
+    }
+  };
+
+  const restartSession = () => {
+    try {
+      // Clear all images and masks by resetting the store to empty state
+      useImageStore.setState({ images: {} });
+      
+      toast.success(t("tools.restartSession.toast") || "Session restarted!", {
+        description: t("tools.restartSession.description") || "All images and masks have been cleared.",
+      });
+
+      return {
+        success: true,
+        message: "Session has been restarted. All previous images and masks have been cleared.",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: `Failed to restart session: ${error}`,
+      };
+    }
+  };
+
+  const clearMask = () => {
+    try {
+      useImageStore.getState().clearMasks();
+      
+      toast.success(t("tools.clearMask.toast") || "Mask cleared!", {
+        description: t("tools.clearMask.description") || "The mask has been removed while keeping the original image.",
+      });
+
+      return {
+        success: true,
+        message: "The mask has been cleared. The original image remains unchanged.",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: `Failed to clear mask: ${error}`,
+      };
+    }
+  };
+
+  const showHelp = () => {
+    try {
+      setShowHelpDialog(true);
+      
+      return {
+        success: true,
+        message: "I've opened the help dialog that shows all available commands and tools.",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: `Failed to show help: ${error}`,
+      };
+    }
+  };
+
+  const closeHelp = () => {
+    try {
+      setShowHelpDialog(false);
+      
+      return {
+        success: true,
+        message: "I've closed the help dialog.",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: `Failed to close help dialog: ${error}`,
+      };
+    }
+  };
+
+  const changeVoice = ({ voice }: { voice: string }) => {
+    try {
+      if (!['ash', 'ballad', 'coral', 'sage', 'verse'].includes(voice)) {
+        return {
+          success: false,
+          message: `Invalid voice selection. Available voices are: ash, ballad, coral, sage, verse.`
+        };
+      }
+
+      setVoice(voice);
+      
+      return {
+        success: true,
+        message: `Voice changed to ${voice}.`,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: `Failed to change voice: ${error}`,
+      };
     }
   };
 
@@ -375,5 +485,12 @@ export const useToolsFunctions = () => {
     generateImage,
     createImageMask,
     inpaintImage,
+    restartSession,
+    clearMask,
+    showHelp,
+    closeHelp,
+    showHelpDialog,
+    setShowHelpDialog,
+    changeVoice,
   };
 };

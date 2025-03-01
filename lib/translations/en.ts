@@ -97,6 +97,28 @@ export const en = {
         description:
           'Say "Inpaint the image based on [text prompt]" to modify an image using AI.',
       },
+      closeHelp: {
+        name: "Close Help",
+        description: 'Say "Close help" to dismiss the help dialog.',
+      },
+      clearMask: {
+        name: "Clear Mask",
+        description:
+          'Say "Clear the mask" to remove the current mask while keeping the image.',
+      },
+      restartSession: {
+        name: "Restart Session",
+        description: 'Say "Restart session" to clear all images and masks.',
+      },
+      showHelp: {
+        name: "Show Help",
+        description: "Shows information about available commands and tools",
+      },
+      changeVoice: {
+        name: "Change Voice",
+        description:
+          'Say "Change voice to [voice name]" to change the AI assistant voice.',
+      },
     },
     clipboard: {
       description: "You can now paste it somewhere.",
@@ -122,6 +144,31 @@ export const en = {
       description: "Failed to scrape website content",
       toast: "Scraping website...",
     },
+    clearMask: {
+      toast: "Mask cleared!",
+      description:
+        "The mask has been removed while keeping the original image.",
+      success: "Mask has been cleared successfully.",
+      failed: "Failed to clear mask",
+    },
+    restartSession: {
+      toast: "Session restarted!",
+      description: "All images and masks have been cleared.",
+      success: "Session has been restarted successfully.",
+      failed: "Failed to restart session",
+    },
+    showHelp: {
+      toast: "Help dialog opened",
+      description: "Showing available commands and tools",
+      success: "Help information is now visible",
+      failed: "Failed to show help dialog",
+    },
+    closeHelp: {
+      toast: "Help dialog closed",
+      description: "The help dialog has been closed",
+      success: "Help dialog has been closed",
+      failed: "Failed to close help dialog",
+    },
   },
   transcriber: {
     title: "Live Transcript",
@@ -137,4 +184,10 @@ export const en = {
   language: "English",
   languagePrompt:
     "Speak and respond only in English. It is crucial that you maintain your responses in English. If the user speaks in other languages, you should still respond in English.",
+  changeVoice: {
+    toast: "Voice changed",
+    description: "Changed the AI assistant voice",
+    success: "Voice has been changed successfully",
+    failed: "Failed to change voice",
+  },
 };
