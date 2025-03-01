@@ -12,7 +12,7 @@ export function BroadcastButton({ isSessionActive, onClick }: BroadcastButtonPro
   return (
     <Button
       variant={isSessionActive ? "destructive" : "default"}
-      className="w-full py-6 text-lg font-medium flex items-center justify-center gap-2 motion-preset-shake"
+      className="w-full py-6 text-lg font-medium flex items-center justify-center gap-2"
       onClick={onClick}
     >
       {isSessionActive && (
@@ -20,7 +20,21 @@ export function BroadcastButton({ isSessionActive, onClick }: BroadcastButtonPro
           {t('broadcast.live')}
         </Badge>
       )}
-      {isSessionActive ? t('broadcast.end') : t('broadcast.start')}
+      {isSessionActive ? (
+        <>
+          {t('broadcast.end')}
+          <kbd className="ml-2 inline-flex items-center gap-1 rounded border px-2 font-mono text-xs">
+            <span className="text-xs">⌘</span>B
+          </kbd>
+        </>
+      ) : (
+        <>
+          {t('broadcast.start')}
+          <kbd className="ml-2 inline-flex items-center gap-1 rounded border px-2 font-mono text-xs">
+            <span className="text-xs">⌘</span>B
+          </kbd>
+        </>
+      )}
     </Button>
   )
 } 

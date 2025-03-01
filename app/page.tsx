@@ -16,9 +16,19 @@ import { Header } from "@/components/header";
 import { useImageStore } from "@/lib/stores/image-store";
 import { LoadingOverlay } from "@/components/loading-overlay";
 import { HelpDialog } from "@/components/help-dialog";
+import { AnimatedLogo } from "@/components/ui/animated-logo";
 
 const App: React.FC = () => {
   const [voice, setVoice] = useState("ash");
+  const [showInitialLoad, setShowInitialLoad] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowInitialLoad(false);
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const {
     status,
@@ -76,6 +86,18 @@ const App: React.FC = () => {
       registerFunction(functionNames[name], func);
     });
   }, [registerFunction, toolsFunctions]);
+
+  
+
+  if (showInitialLoad) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        <div className="text-2xl font-bold text-center">
+          <AnimatedLogo className="h-24 w-auto" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="h-[calc(100vh)] bg-red-200 w-full flex flex-col">
