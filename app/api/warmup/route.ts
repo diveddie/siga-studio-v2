@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
 
-// Add config for increased timeout
-export const runtime = 'edge';
 export const maxDuration = 300; // 5 minutes
 
 // Initialize Replicate

@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import Replicate from "replicate";
 import { createClient } from "@supabase/supabase-js";
 
-// Add config for increased timeout
-export const runtime = 'edge'; // Use Edge Runtime
 export const maxDuration = 300; // Set timeout to 300 seconds (5 minutes)
 
 // Initialize Replicate
