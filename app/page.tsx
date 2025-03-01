@@ -12,6 +12,8 @@ import { motion } from "framer-motion";
 import { useToolsFunctions } from "@/hooks/use-tools";
 import { MaskDisplay } from "@/components/mask-display";
 import { ImageDisplay } from "@/components/image-display";
+import { Header } from "@/components/header";
+import { useImageStore } from "@/lib/stores/image-store";
 
 const App: React.FC = () => {
   const [voice, setVoice] = useState("ash");
@@ -46,7 +48,7 @@ const App: React.FC = () => {
   }, [registerFunction, toolsFunctions]);
 
   return (
-    <main className="h-[calc(100vh-49px)] bg-red-200 w-full flex flex-col">
+    <main className="h-[calc(100vh)] bg-red-200 w-full flex flex-col">
       <div className="flex flex-1 overflow-hidden bg-blue-200">
         {/* Main Canvas Area */}
         <div className="flex-1 flex">
@@ -60,12 +62,26 @@ const App: React.FC = () => {
                 <div className="absolute inset-0">
                   <MaskDisplay className="opacity-50 rounded-lg" />
                 </div>
+                {/* Empty State Message */}
+                {!useImageStore.getState().getLatestImage() && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center text-muted-foreground p-4">
+                      <p className="text-lg font-medium mb-2">
+                        No image generated yet
+                      </p>
+                      <p className="text-sm">
+                        Try saying &quot;Generate an image of [your description]&quot;
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
           {/* Right Panel */}
           <div className="w-1/3 border-l border-border bg-card flex flex-col">
+            <Header />
             <div className="p-4 space-y-4">
               <VoiceSelector value={voice} onValueChange={setVoice} />
               <div className="flex justify-center">

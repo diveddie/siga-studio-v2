@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Londrina_Shadow } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { siteConfig } from "@/config/site";
@@ -9,8 +8,9 @@ import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { TranslationsProvider } from "@/components/translations-context";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const londrinaShadow = Londrina_Shadow({
+  weight: "400",
+  variable: "--font-londrina-shadow",
   subsets: ["latin"],
 });
 
@@ -20,12 +20,6 @@ export const metadata: Metadata = {
   authors: [{ name: siteConfig.author, url: siteConfig.links.twitter }],
   creator: siteConfig.author,
   metadataBase: new URL(siteConfig.url),
-  openGraph: {
-    images: "/opengraph-image.png",
-  },
-  icons: {
-    icon: "/favicon.ico",
-  },
   keywords: ["Siga Studio", "Voice Driven Design Studio"],
 };
 
@@ -39,7 +33,7 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-dvh bg-background font-sans antialiased",
-          geistSans.variable
+          londrinaShadow.variable
         )}
       >
         <ThemeProvider
@@ -50,7 +44,7 @@ export default function RootLayout({
         >
           <TranslationsProvider>
             <div className="relative flex min-h-dvh flex-col bg-background items-center">
-              <Header />
+              {/* <Header /> */}
               <main className="flex flex-1 w-full justify-center items-start">
                 {children}
               </main>
