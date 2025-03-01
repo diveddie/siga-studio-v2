@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Conversation } from "@/lib/conversations";
 import { useTranslations } from "@/components/translations-context";
@@ -18,10 +18,12 @@ export interface Tool {
 interface UseWebRTCAudioSessionReturn {
   status: string;
   isSessionActive: boolean;
+  isMicMuted: boolean;
   audioIndicatorRef: React.RefObject<HTMLDivElement | null>;
   startSession: () => Promise<void>;
   stopSession: () => void;
   handleStartStopClick: () => void;
+  toggleMic: () => void;
   registerFunction: (name: string, fn: Function) => void;
   msgs: any[];
   currentVolume: number;
@@ -40,6 +42,7 @@ export default function useWebRTCAudioSession(
   // Connection/session states
   const [status, setStatus] = useState("");
   const [isSessionActive, setIsSessionActive] = useState(false);
+  const [isMicMuted, setIsMicMuted] = useState(false);
 
   // Audio references for local mic
   // Approach A: explicitly typed as HTMLDivElement | null
@@ -555,6 +558,17 @@ export default function useWebRTCAudioSession(
     dataChannelRef.current.send(JSON.stringify(message));
     dataChannelRef.current.send(JSON.stringify(response));}
 
+  // Add toggle mic function
+  const toggleMic = useCallback(() => {
+    if (audioStreamRef.current) {
+      const audioTrack = audioStreamRef.current.getAudioTracks()[0];
+      if (audioTrack) {
+        audioTrack.enabled = !audioTrack.enabled;
+        setIsMicMuted(!audioTrack.enabled);
+      }
+    }
+  }, []);
+
   // Cleanup on unmount
   useEffect(() => {
     return () => stopSession();
@@ -564,10 +578,12 @@ export default function useWebRTCAudioSession(
   return {
     status,
     isSessionActive,
+    isMicMuted,
     audioIndicatorRef,
     startSession,
     stopSession,
     handleStartStopClick,
+    toggleMic,
     registerFunction,
     msgs,
     currentVolume,

@@ -108,7 +108,7 @@ function ConversationItem({ message }: { message: Conversation }) {
           isUser
             ? "bg-primary text-background"
             : "bg-secondary dark:text-foreground"
-        } px-4 py-2 rounded-lg max-w-[70%] motion-preset-slide-up-right`}
+        } px-4 py-2 rounded-lg max-w-[350px] motion-preset-slide-up-right`}
       >
         {(isUser && msgStatus === "speaking") || msgStatus === "processing" ? (
           <ThreeDotsWave />
@@ -117,16 +117,42 @@ function ConversationItem({ message }: { message: Conversation }) {
             <ReactMarkdown
               components={{
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                a: ({ node, children, ...props }) => (
-                  <a
-                    {...props}
-                    style={{ color: "inherit", textDecoration: "underline" }}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {children}
-                  </a>
-                ),
+                a: ({ node, children, href, ...props }) => {
+                  // Check if href is a valid URL
+                  let isValidUrl = false;
+                  try {
+                    new URL(href || '');
+                    isValidUrl = true;
+                  } catch {
+                    isValidUrl = false;
+                  }
+
+                  // If URL is invalid, just render as text
+                  if (!isValidUrl) {
+                    return <span>{children}</span>;
+                  }
+
+                  return (
+                    <a
+                      {...props}
+                      href={href}
+                      style={{ color: "inherit", textDecoration: "underline" }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {children}
+                    </a>
+                  );
+                },
+              }}
+              skipHtml={true}
+              urlTransform={(url) => {
+                try {
+                  new URL(url);
+                  return url;
+                } catch {
+                  return '#';
+                }
               }}
             >
               {message.text}
@@ -174,7 +200,7 @@ export default function Transcriber({ conversation }: TranscriberProps) {
   }, [conversation]);
 
   return (
-    <div className="flex flex-col flex-1 w-full mx-auto bg-background rounded-lg shadow-lg overflow-scroll dark:bg-background">
+    <div className="flex flex-col flex-1 w-full max-w-xl mx-auto bg-background rounded-lg shadow-lg overflow-scroll dark:bg-background">
       {/* Header */}
       <div className="bg-secondary px-4 py-3 flex items-center justify-between dark:bg-secondary">
         <div className="font-medium text-foreground dark:text-foreground">

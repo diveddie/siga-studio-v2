@@ -21,13 +21,36 @@ const App: React.FC = () => {
   const {
     status,
     isSessionActive,
+    isMicMuted,
     registerFunction,
     handleStartStopClick,
+    toggleMic,
     conversation,
     sendTextMessage,
   } = useWebRTCAudioSession(voice, tools);
 
   const toolsFunctions = useToolsFunctions();
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Broadcast shortcut (Cmd/Ctrl + B)
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'b') {
+        event.preventDefault();
+        handleStartStopClick();
+      }
+      
+      // Mic toggle shortcut (Cmd/Ctrl + M)
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'm') {
+        event.preventDefault();
+        if (isSessionActive) {
+          toggleMic();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleStartStopClick, isSessionActive, toggleMic]);
 
   useEffect(() => {
     Object.entries(toolsFunctions).forEach(([name, func]) => {
@@ -84,11 +107,19 @@ const App: React.FC = () => {
             <Header />
             <div className="p-4 space-y-4">
               <VoiceSelector value={voice} onValueChange={setVoice} />
-              <div className="flex justify-center">
+              <div className="flex flex-col gap-2">
                 <BroadcastButton
                   isSessionActive={isSessionActive}
                   onClick={handleStartStopClick}
                 />
+                {isSessionActive && (
+                  <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                    <span>Mic: {isMicMuted ? 'Muted' : 'Active'}</span>
+                    <kbd className="inline-flex items-center gap-1 rounded border bg-muted px-2 font-mono text-xs">
+                      <span className="text-xs">⌘</span>M
+                    </kbd>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -101,10 +132,12 @@ const App: React.FC = () => {
                   transition={{ duration: 0.3 }}
                 >
                   <MessageControls conversation={conversation} />
-                  <TextInput
-                    onSubmit={sendTextMessage}
-                    disabled={!isSessionActive}
-                  />
+                  {isSessionActive && (
+                    <TextInput
+                      onSubmit={sendTextMessage}
+                      disabled={!isSessionActive}
+                    />
+                  )}
                 </motion.div>
               )}
             </div>
