@@ -14,7 +14,7 @@ export const en = {
         github: "Star on GitHub",
         language: "Language",
         light: "Light",
-        logo: "OpenAI Realtime Starter",
+        logo: "Siga Studio",
         system: "System",
         theme: "Toggle theme",
         twitter: "Follow on"
