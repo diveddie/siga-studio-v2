@@ -136,6 +136,12 @@ export const en = {
       toast: "Party mode!",
       failed: "Failed to activate party mode",
     },
+    sparkleMode: {
+      description: "Failed to activate sparkle mode",
+      success: "Sparkle mode activated",
+      toast: "Sparkle mode ✨!",
+      failed: "Failed to activate sparkle mode",
+    },
     switchTheme: "Theme switched to ",
     themeFailed: "Failed to switch theme",
     time: "Announce to user: The current time is ",

@@ -12,7 +12,7 @@ import { useState } from 'react';
 export const useToolsFunctions = (setVoice: (voice: string) => void) => {
   const { t } = useTranslations();
   const { setGeneratingImage, setGeneratingMask, setInpainting } = useLoadingStore();
-  
+
   const [showHelpDialog, setShowHelpDialog] = useState(false);
 
   const timeFunction = () => {
@@ -169,6 +169,78 @@ export const useToolsFunctions = (setVoice: (voice: string) => void) => {
       return {
         success: false,
         message: t("tools.partyMode.failed") + ": " + error,
+      };
+    }
+  };
+
+  const sparkleFunction = () => {
+    try {
+      const mainElement = document.querySelector("main");
+      if (!mainElement) {
+        return {
+          success: false,
+          message: "Could not find main element to add sparkles to",
+        };
+      }
+
+      const createSparkle = () => {
+        const sparkle = document.createElement("div");
+        sparkle.style.position = "absolute";
+        sparkle.style.pointerEvents = "none";
+        sparkle.style.width = "10px";
+        sparkle.style.height = "10px";
+        sparkle.style.backgroundColor = "white";
+        sparkle.style.borderRadius = "50%";
+
+        // Random position within main element
+        const rect = mainElement.getBoundingClientRect();
+        const x = Math.random() * rect.width;
+        const y = Math.random() * rect.height;
+        sparkle.style.left = `${x}px`;
+        sparkle.style.top = `${y}px`;
+
+        mainElement.appendChild(sparkle);
+
+        // Animate sparkle
+        framerAnimate(
+          sparkle,
+          {
+            scale: [0, 1, 0],
+            opacity: [0, 1, 0],
+            y: y - 100,
+          },
+          {
+            duration: 1,
+            ease: "easeOut",
+          }
+        ).then(() => sparkle.remove());
+      };
+
+      // Create multiple sparkles
+      const sparkleCount = 50;
+      let sparklesCreated = 0;
+
+      const createSparkles = () => {
+        if (sparklesCreated >= sparkleCount) return;
+        createSparkle();
+        sparklesCreated++;
+        setTimeout(createSparkles, 50);
+      };
+
+      createSparkles();
+
+      toast.success(t("tools.sparkleMode.toast") + " ✨", {
+        description: t("tools.sparkleMode.description"),
+      });
+
+      return {
+        success: true,
+        message: t("tools.sparkleMode.success") + " ✨",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: t("tools.sparkleMode.failed") + ": " + error,
       };
     }
   };
@@ -383,7 +455,7 @@ export const useToolsFunctions = (setVoice: (voice: string) => void) => {
     try {
       // Clear all images and masks by resetting the store to empty state
       useImageStore.setState({ images: {} });
-      
+
       toast.success(t("tools.restartSession.toast") || "Session restarted!", {
         description: t("tools.restartSession.description") || "All images and masks have been cleared.",
       });
@@ -403,7 +475,7 @@ export const useToolsFunctions = (setVoice: (voice: string) => void) => {
   const clearMask = () => {
     try {
       useImageStore.getState().clearMasks();
-      
+
       toast.success(t("tools.clearMask.toast") || "Mask cleared!", {
         description: t("tools.clearMask.description") || "The mask has been removed while keeping the original image.",
       });
@@ -423,7 +495,7 @@ export const useToolsFunctions = (setVoice: (voice: string) => void) => {
   const showHelp = () => {
     try {
       setShowHelpDialog(true);
-      
+
       return {
         success: true,
         message: "I've opened the help dialog that shows all available commands and tools.",
@@ -439,7 +511,7 @@ export const useToolsFunctions = (setVoice: (voice: string) => void) => {
   const closeHelp = () => {
     try {
       setShowHelpDialog(false);
-      
+
       return {
         success: true,
         message: "I've closed the help dialog.",
@@ -462,7 +534,7 @@ export const useToolsFunctions = (setVoice: (voice: string) => void) => {
       }
 
       setVoice(voice);
-      
+
       return {
         success: true,
         message: `Voice changed to ${voice}.`,
@@ -479,6 +551,7 @@ export const useToolsFunctions = (setVoice: (voice: string) => void) => {
     timeFunction,
     backgroundFunction,
     partyFunction,
+    sparkleFunction,
     launchWebsite,
     copyToClipboard,
     scrapeWebsite,

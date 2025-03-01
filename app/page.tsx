@@ -60,6 +60,7 @@ const App: React.FC = () => {
         timeFunction: "getCurrentTime",
         backgroundFunction: "changeBackgroundColor",
         partyFunction: "partyMode",
+        sparkleFunction: "sparkleMode",
         launchWebsite: "launchWebsite",
         copyToClipboard: "copyToClipboard",
         scrapeWebsite: "scrapeWebsite",
