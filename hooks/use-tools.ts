@@ -260,7 +260,7 @@ export const useToolsFunctions = () => {
         success: true,
         imageUrl: data[0].url,
         message:
-          "I've generated an image based on your prompt. You can see it displayed above.",
+          "I've generated an image based on your prompt. You can see it displayed to the left",
       };
     } catch (error) {
       return {
@@ -310,7 +310,7 @@ export const useToolsFunctions = () => {
         success: true,
         maskUrl: data.url,
         message:
-          "I've generated a mask for the specified objects in the image. You can see it displayed above.",
+          "I've generated a mask for the specified objects in the image. You can see it displayed to the left.",
       };
     } catch (error) {
       return {
@@ -345,13 +345,17 @@ export const useToolsFunctions = () => {
         };
       }
 
-      // Store the inpainted image URL in our Zustand store
-      useImageStore.getState().addImage(`inpainted-${Date.now()}`, data.url);
+      // Clear existing images and masks by creating a new empty state
+      useImageStore.setState({ images: {} });
+
+      // Add only the new inpainted image
+      useImageStore.getState().addImage(Date.now().toString(), data.url);
 
       return {
         success: true,
         imageUrl: data.url,
-        message: "I've inpainted the image based on your prompt. You can see it displayed above.",
+        message:
+          "I've inpainted the image based on your prompt. You can see it displayed to the left.",
       };
     } catch (error) {
       return {

@@ -16,7 +16,7 @@ export function Header() {
       transition={{ duration: 0.4 }}
       className="w-full sticky top-0 z-50 border-b bg-background"
     >
-      <div className="container mx-auto px-4 h-12 flex items-center justify-between gap-2">
+      <div className="mx-auto px-4 h-12 flex items-center justify-between gap-2">
         <MobileNav />
         <motion.nav
           initial={{ opacity: 0 }}

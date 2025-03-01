@@ -4,23 +4,23 @@ import { useImageStore } from "@/lib/stores/image-store"
 import Image from "next/image"
 import { useMemo } from "react"
 
-interface MaskDisplayProps {
+interface ImageDisplayProps {
   className?: string
 }
 
-export const MaskDisplay = ({ className }: MaskDisplayProps) => {
+export const ImageDisplay = ({ className }: ImageDisplayProps) => {
   const store = useImageStore()
   
-  const mask = useMemo(() => {
-    return store.getLatestMask();
+  const image = useMemo(() => {
+    return store.getLatestImage();
   }, [store.images])
   
-  if (!mask) return null
+  if (!image) return null
 
   return (
     <Image
-      src={mask}
-      alt="Generated mask"
+      src={image}
+      alt="Generated image"
       fill
       className={`object-contain ${className || ''}`}
     />
