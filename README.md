@@ -7,6 +7,18 @@ A voice-driven design studio that makes design accessible for everyone. Built wi
 - Eddie Hudson
 - Shep Bryan
 
+## Base Repo Forked From
+[Cameron King's OpenAI Realtime API Next.js Starter](https://github.com/cameronking4/openai-realtime-api-nextjs)
+
+## Additional Work
+[Siga Studio v1 Repo](https://github.com/diveddie/siga-studio-v1)
+
+Which is based loosely on:
+
+[OpenAI Realtime Console Repo](https://github.com/openai/openai-realtime-console/tree/websockets)
+
+
+
 ## Features
 - **Voice-First Design**: Create and modify designs through natural conversation
 - **Accessibility Focus**: Built from the ground up for designers of all abilities
