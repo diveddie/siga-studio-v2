@@ -87,7 +87,23 @@ const App: React.FC = () => {
     });
   }, [registerFunction, toolsFunctions]);
 
-  
+  useEffect(() => {
+    // Only start the warm-up interval if the session is active
+    if (isSessionActive) {
+      // Initial warm-up
+      fetch('/api/warmup', { method: 'POST' })
+        .catch(err => console.error('Warm-up error:', err));
+
+      // Set up interval for subsequent warm-ups (every 5 minutes)
+      const warmupInterval = setInterval(() => {
+        fetch('/api/warmup', { method: 'POST' })
+          .catch(err => console.error('Warm-up error:', err));
+      }, 1 * 60 * 1000); // 5 minutes
+
+      // Cleanup interval when session ends or component unmounts
+      return () => clearInterval(warmupInterval);
+    }
+  }, [isSessionActive]); // Depend on isSessionActive to start/stop warm-up
 
   if (showInitialLoad) {
     return (

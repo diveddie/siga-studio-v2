@@ -83,13 +83,21 @@ function shouldDisplayMessage(msg: Conversation): boolean {
 /**
  * Single conversation item
  */
-function ConversationItem({ message }: { message: Conversation }) {
+function ConversationItem({ message, isLatest }: { message: Conversation, isLatest?: boolean }) {
+  const messageRef = React.useRef<HTMLDivElement>(null);
   const isUser = message.role === "user";
   const isAssistant = message.role === "assistant";
   const msgStatus = message.status;
 
+  React.useEffect(() => {
+    if (isLatest && messageRef.current) {
+      messageRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [isLatest, message.text]);
+
   return (
     <motion.div
+      ref={messageRef}
       initial={{ opacity: 0, x: isUser ? 20 : -20, y: 10 }}
       animate={{ opacity: 1, x: 0, y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
@@ -186,13 +194,37 @@ interface TranscriberProps {
 export default function Transcriber({ conversation }: TranscriberProps) {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const { t } = useTranslations();
+  const [autoScroll, setAutoScroll] = React.useState(true);
+  const [lastScrollTop, setLastScrollTop] = React.useState(0);
 
-  // Scroll to bottom whenever conversation updates
-  React.useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  // Handle scroll events to determine if we should auto-scroll
+  const handleScroll = React.useCallback((event: React.UIEvent<HTMLDivElement>) => {
+    const element = event.currentTarget;
+    const isScrollingUp = element.scrollTop < lastScrollTop;
+    const isNearBottom = element.scrollHeight - element.scrollTop - element.clientHeight < 50;
+    
+    setLastScrollTop(element.scrollTop);
+    
+    if (isNearBottom) {
+      setAutoScroll(true);
+    } else if (isScrollingUp) {
+      setAutoScroll(false);
     }
-  }, [conversation]);
+  }, [lastScrollTop]);
+
+  // Scroll to bottom when conversation updates, but only if autoScroll is enabled
+  React.useEffect(() => {
+    if (scrollRef.current && autoScroll) {
+      const scrollElement = scrollRef.current;
+      // Use requestAnimationFrame to ensure the scroll happens after the render
+      requestAnimationFrame(() => {
+        scrollElement.scrollTo({
+          top: scrollElement.scrollHeight,
+          behavior: 'smooth'
+        });
+      });
+    }
+  }, [conversation, autoScroll]);
 
   // Filter out messages that we do not want to display
   const displayableMessages = React.useMemo(() => {
@@ -213,10 +245,15 @@ export default function Transcriber({ conversation }: TranscriberProps) {
         <div
           ref={scrollRef}
           className="p-4 space-y-4 max-h-96"
+          onScroll={handleScroll}
         >
           <AnimatePresence>
-            {displayableMessages.map((message) => (
-              <ConversationItem key={message.id} message={message} />
+            {displayableMessages.map((message, index) => (
+              <ConversationItem 
+                key={message.id} 
+                message={message}
+                isLatest={index === displayableMessages.length - 1}
+              />
             ))}
           </AnimatePresence>
         </div>
