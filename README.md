@@ -18,7 +18,7 @@ A voice-driven design studio that makes design accessible for everyone. Built wi
 ## Getting Started
 
 ### Requirements
-- Node.js 18+ or Deno runtime
+- Node.js 18+
 - OpenAI API Key (Beta access required)
 
 ### Quick Start

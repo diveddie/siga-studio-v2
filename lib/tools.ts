@@ -122,6 +122,10 @@ const toolDefinitions = {
             }
         }
     },
+    explainSiga: {
+        description: 'Explains how to use Siga Studio\'s image generation and editing workflow',
+        parameters: {}
+    },
 } as const;
 
 const tools: Tool[] = Object.entries(toolDefinitions).map(([name, config]) => ({

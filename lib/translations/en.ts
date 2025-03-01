@@ -119,6 +119,11 @@ export const en = {
         description:
           'Say "Change voice to [voice name]" to change the AI assistant voice.',
       },
+      explainSiga: {
+        name: "Explain Siga",
+        description:
+          "Explains how to use Siga Studio's image generation and editing workflow",
+      },
     },
     clipboard: {
       description: "You can now paste it somewhere.",

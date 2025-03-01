@@ -41,7 +41,8 @@ const App: React.FC = () => {
     sendTextMessage,
   } = useWebRTCAudioSession(voice, tools);
 
-  const { showHelpDialog, setShowHelpDialog, ...toolsFunctions } = useToolsFunctions(setVoice);
+  const { showHelpDialog, setShowHelpDialog, ...toolsFunctions } =
+    useToolsFunctions(setVoice);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -82,6 +83,7 @@ const App: React.FC = () => {
         clearMask: "clearMask",
         showHelp: "showHelp",
         closeHelp: "closeHelp",
+        explainSiga: "explainSiga",
       };
 
       registerFunction(functionNames[name], func);
@@ -92,13 +94,15 @@ const App: React.FC = () => {
     // Only start the warm-up interval if the session is active
     if (isSessionActive) {
       // Initial warm-up
-      fetch('/api/warmup', { method: 'POST' })
-        .catch(err => console.error('Warm-up error:', err));
+      fetch("/api/warmup", { method: "POST" }).catch((err) =>
+        console.error("Warm-up error:", err)
+      );
 
       // Set up interval for subsequent warm-ups (every 5 minutes)
       const warmupInterval = setInterval(() => {
-        fetch('/api/warmup', { method: 'POST' })
-          .catch(err => console.error('Warm-up error:', err));
+        fetch("/api/warmup", { method: "POST" }).catch((err) =>
+          console.error("Warm-up error:", err)
+        );
       }, 1 * 60 * 1000); // 5 minutes
 
       // Cleanup interval when session ends or component unmounts
@@ -119,14 +123,14 @@ const App: React.FC = () => {
   return (
     <main className="h-[calc(100vh)] w-full flex flex-col">
       <HelpDialog open={showHelpDialog} onOpenChange={setShowHelpDialog} />
-      <motion.div 
+      <motion.div
         className="flex flex-1 overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4 }}
       >
         {/* Main Canvas Area */}
-        <motion.div 
+        <motion.div
           className="flex-1 flex"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -134,7 +138,7 @@ const App: React.FC = () => {
         >
           {/* Canvas */}
           <div className="flex-1 flex items-center justify-center p-6 overflow-auto bg-background">
-            <motion.div 
+            <motion.div
               className="w-full h-full rounded-lg border-2 border-dashed border-border flex items-center justify-center relative"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -142,7 +146,7 @@ const App: React.FC = () => {
             >
               <div className="relative aspect-square w-full max-w-2xl mx-auto rounded-md">
                 {/* Image Display Area */}
-                <motion.div 
+                <motion.div
                   className="relative aspect-square w-full bg-muted rounded-lg"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -156,18 +160,31 @@ const App: React.FC = () => {
                   </div>
                   {/* Empty State Message */}
                   {!useImageStore.getState().getLatestImage() && (
-                    <motion.div 
+                    <motion.div
                       className="absolute inset-0 flex items-center justify-center"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3, delay: 0.8 }}
                     >
-                      <div className="text-center text-muted-foreground p-4">
+                      <div className="text-center text-muted-foreground p-4 space-y-2">
                         <p className="text-lg font-medium mb-2">
                           No image generated yet
                         </p>
                         <p className="text-sm">
-                          Try saying &quot;Generate an image of [your description]&quot;
+                          Make sure that broadcast is enabled. You can do this
+                          with the{" "}
+                          <kbd className="inline-flex items-center gap-1 rounded border bg-muted px-2 font-mono text-xs">
+                            <span className="text-xs">⌘</span>B
+                          </kbd>{" "}
+                          shortcut.
+                        </p>
+                        <p className="text-sm">
+                          Try saying &quot;Generate an image of [your
+                          description]&quot;
+                        </p>
+                        <p className="text-sm">--or--</p>
+                        <p className="text-sm">
+                          Try saying &quot;Explain how to use Siga&quot;
                         </p>
                       </div>
                     </motion.div>
@@ -178,14 +195,14 @@ const App: React.FC = () => {
           </div>
 
           {/* Right Panel */}
-          <motion.div 
+          <motion.div
             className="w-1/3 border-l border-border bg-card flex flex-col"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <Header />
-            <motion.div 
+            <motion.div
               className="p-4 space-y-4"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -198,7 +215,7 @@ const App: React.FC = () => {
                   onClick={handleStartStopClick}
                 />
                 {isSessionActive && (
-                  <motion.div 
+                  <motion.div
                     className="flex items-center justify-center gap-2 text-sm text-muted-foreground"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}

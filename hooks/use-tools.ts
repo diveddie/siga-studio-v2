@@ -547,6 +547,36 @@ export const useToolsFunctions = (setVoice: (voice: string) => void) => {
     }
   };
 
+  const explainSiga = () => {
+    return {
+      success: true,
+      message: `Here's how to use Siga Studio for image generation and editing:
+
+1. Generate an Image:
+   - Start by saying "Generate an image of..." followed by your description
+   - For example: "Generate an image of a cozy cabin in the woods at sunset"
+   - The AI will create your image based on the description
+
+2. Create a Mask:
+   - Once you have an image, say "Create a mask for..." followed by what you want to change
+   - For example: "Create a mask for the cabin" or "Create a mask for the trees"
+   - This will highlight the area you want to modify
+
+3. Inpaint the Image:
+   - Finally, say "Inpaint the image to..." followed by your desired changes
+   - For example: "Inpaint the image to make the cabin modern and metallic"
+   - The AI will modify only the masked area while keeping the rest of the image intact
+
+Tips:
+- Be specific in your descriptions for better results
+- You can create multiple masks and inpaint multiple times
+- Use "Clear mask" to remove the current mask
+- Use "Restart session" to start over with a fresh canvas
+
+Would you like me to help you create something specific?`
+    };
+  };
+
   return {
     timeFunction,
     backgroundFunction,
@@ -565,5 +595,6 @@ export const useToolsFunctions = (setVoice: (voice: string) => void) => {
     showHelpDialog,
     setShowHelpDialog,
     changeVoice,
+    explainSiga,
   };
 };

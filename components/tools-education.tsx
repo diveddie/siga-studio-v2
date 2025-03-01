@@ -68,6 +68,10 @@ export function ToolsEducation() {
     {
       name: t("tools.availableTools.changeVoice.name"),
       description: t("tools.availableTools.changeVoice.description"),
+    },
+    {
+      name: t("tools.availableTools.explainSiga.name"),
+      description: t("tools.availableTools.explainSiga.description"),
     }
   ] as const;
 
